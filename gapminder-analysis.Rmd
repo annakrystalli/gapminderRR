@@ -1,0 +1,79 @@
+---
+title: "gapminder-analysis"
+author: "Anna Krystalli"
+date: "5/1/2018"
+output: 
+  html_document:
+      toc: true
+      float_toc: true
+      theme: cosmo
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+Excerpt from the [Gapminder](http://www.gapminder.org/data/) data. The main object in this package is the `gapminder` data frame or "tibble". 
+
+
+# Installation
+
+Install `gapminder` from CRAN:
+
+```{r, eval=FALSE}
+install.packages("gapminder")
+
+```
+
+Or you can install `gapminder` from GitHub:
+
+```{r, eval=FALSE}
+devtools::install_github("jennybc/gapminder")
+```
+
+
+
+## DATA
+
+
+The 
+
+```{r}
+gapminder_df <- readr::read_csv(here::here("data", "raw", "gapminder.csv"))
+```
+
+```{r}
+DT::datatable(gapminder_df, caption = "gapminder dataset sourced from the gapminder r package")
+```
+
+### Visual summary of the data
+
+```{r}
+library(skimr)
+skim(gapminder_df)
+```
+
+
+## Relationship between GDP per capita and Life Expectancy
+
+```{r, echo=FALSE}
+library(ggplot2)
+
+gapminder_df %>% ggplot(aes(x = gdpPercap, y = lifeExp)) +
+    geom_point()
+```
+
+### Linear model of Life expectancy as a function of GDP per capita
+
+```{r}
+library(broom) # great for extracting model parameter summaries
+lm(lifeExp ~ gdpPercap, data = gapminder_df) %>% broom::glance()
+```
+
+```{r, message=FALSE}
+meta_tbl <- readr::read_csv(here::here("data", "metadata", "gapminder_meta.csv"))
+```
+
