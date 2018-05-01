@@ -13,3 +13,5 @@ ByteCompile: true
 RoxygenNote: 6.0.1
 Imports: 
     dplyr
+URL: https://github.com/annakrystalli/gapminderRR
+BugReports: https://github.com/annakrystalli/gapminderRR/issues
