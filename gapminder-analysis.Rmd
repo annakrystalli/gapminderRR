@@ -5,7 +5,7 @@ date: "5/1/2018"
 output: 
   html_document:
       toc: true
-      float_toc: true
+      toc_float: true
       theme: cosmo
 ---
 
@@ -39,8 +39,6 @@ devtools::install_github("jennybc/gapminder")
 ## DATA
 
 
-The 
-
 ```{r}
 gapminder_df <- readr::read_csv(here::here("data", "raw", "gapminder.csv"))
 ```
@@ -73,7 +71,34 @@ library(broom) # great for extracting model parameter summaries
 lm(lifeExp ~ gdpPercap, data = gapminder_df) %>% broom::glance()
 ```
 
+
+
+
+```{r, echo=TRUE}
+library(ggplot2)
+
+gapminder_df %>% ggplot(aes(x = gdpPercap, y = lifeExp, color = continent)) +
+    geom_point() + scale_x_log10() 
+```
+
+### Linear model of Life expectancy as a function of GDP per capita
+
+```{r}
+library(broom) # great for extracting model parameter summaries
+lm(lifeExp ~ log10(gdpPercap), data = gapminder_df) %>% broom::glance()
+```
+
+
+
 ```{r, message=FALSE}
 meta_tbl <- readr::read_csv(here::here("data", "metadata", "gapminder_meta.csv"))
 ```
 
+### Add smooth lines
+
+```{r, echo=TRUE}
+library(ggplot2)
+
+gapminder_df %>% ggplot(aes(x = gdpPercap, y = lifeExp, color = continent)) +
+    geom_point() + scale_x_log10() + geom_smooth()
+```
